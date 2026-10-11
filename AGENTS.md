@@ -1,0 +1,98 @@
+# Dotfiles 仓库维护指引
+
+本仓库使用 chezmoi 管理个人配置，以 Git 保存历史，默认位置为 `~/dotfiles`。目标是支持多台机器；目前已验证的基线为一台 Omarchy/Linux 机器。维护时先核对实际状态，不把已有文档中的日期快照当成永久事实。
+
+## 文档入口
+
+- [README.md（English）](README.md)：英文概览、仓库结构与常用操作。
+- [README_CN.md（中文）](README_CN.md)：与英文 README 对应的中文概览。
+- [docs/SETUP.md](docs/SETUP.md)：初始化步骤、第一批配置说明、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
+
+开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
+
+## 工作范围与用户协作
+
+- 这是独立的 dotfiles 仓库。系统安装、故障排查和机器维护记录由另一个 `System-Maintain` 仓库保存；不要把两个仓库混为一体。
+- 用户正在通过亲自执行步骤学习 chezmoi。教学任务应给出可执行步骤，由用户操作；用户说“做完了，看看”时，以只读核查为主。
+- 用户明确委托写文档或执行维护时，完成已授权工作。是否应用配置、安装软件、提交或推送，应依据当前任务的授权范围，不因本文件默认扩大权限。
+- 修改前检查 Git 工作区与 chezmoi 差异，保留用户尚未提交或尚未同步的变化。完成后说明改动、验证结果和仍需用户操作的事项。
+
+## 仓库布局与源文件规则
+
+- [.chezmoiroot](.chezmoiroot) 的内容是 `home`，只有 `home/` 是 dotfiles 部署源根目录。
+- 根目录的 README、本文和 `docs/` 保留在仓库中，不部署到用户家目录。
+- [home/.chezmoi.toml.tmpl](home/.chezmoi.toml.tmpl) 生成本机 `~/.config/chezmoi/chezmoi.toml`。本机运行配置不要作为普通 dotfile 导入。
+- 保留 chezmoi 的属性命名：`dot_`、`private_`、`executable_`、`symlink_` 和 `.tmpl` 等，不把它们当作多余前后缀删除。
+- 普通源文件和应用实际文件是两份文件。编辑源配置使用 `chezmoi edit` 或明确的源路径，部署通过 `chezmoi apply`。
+- 导入时选择明确的文件或已检查的配置目录。不要整体导入 `~/.config`、认证目录、缓存、会话、日志、历史数据库、安装目录或旧备份；不要未经评估使用 `--exact`。
+- 相同环境是否存在某工具，适合由 shell 的可读性或可执行性检查处理；每台机器的偏好适合使用模板数据。共享配置避免写死用户名和工具安装版本路径。
+
+## 第一批配置的维护约定
+
+各项的完整配置与依赖说明见 [SETUP：七类配置的内容与维护要点](docs/SETUP.md#4-七类配置的内容与维护要点)。
+
+| 配置 | 必须保留或复核的行为 |
+| --- | --- |
+| Ghostty | 保留 Omarchy 主题引用与已有快捷键；`io_uring` 是本机 Linux 崩溃规避设置，跨系统应用前复核 |
+| herdr | 未设置选项沿用官方默认值，只保留少量 UI 偏好；不要恢复 Omarchy 旧快捷键覆盖 |
+| Git | GitHub/Gist 的空 `helper =` 用于重置助手列表，后接 `!gh auth git-credential`；运行 Git 的环境需能找到 `gh` |
+| Bash | `.bashrc` 是模板，保留代理条件、可选依赖检查与既有兼容补丁；`.profile` 保持 POSIX 语法 |
+| mise | 配置保存工具声明，工具安装由 mise 完成；`latest` 不等于固定版本，安装与升级属于另外的操作 |
+| Neovim | 保存配置和 `lazy-lock.json`，保留 Omarchy 主题符号链接；插件目录与缓存由插件管理器重建 |
+| Fontconfig | 仅保存选定的规则文件，排除旧 `.bak`；字体文件及包安装另外处理 |
+
+Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lua) 是链接声明，指向 Omarchy 当前主题。不要使用 `chezmoi add --follow` 将其变成固定主题内容。没有 Omarchy 的机器需要先增加备用主题；当前仓库尚未完成跨平台验证。
+
+修改 Omarchy 用户配置时遵循环境中适用的 Omarchy 指引；`/usr/share/omarchy/` 只读，修改用户配置或本仓库中的源配置。需要操作 herdr 本身时，遵循其官方 skill 和环境检查要求，不把仅查看本仓库配置变成会话操作。
+
+## 模板、本机选项与秘密
+
+- `.bashrc` 从本机 `[data].enableProxy` 读取代理开关；初始化模板使用 `promptBoolOnce`，默认关闭，已有选择会复用。
+- 修改初始化模板后需要重新 `chezmoi init --source "$HOME/dotfiles"` 才会生成新的本机运行配置。不要为重新生成配置顺手添加 `--apply`；先查看部署差异。
+- 关闭代理选项不等于清理已运行进程的环境变量，具体处理见 [SETUP：更改本机代理选择](docs/SETUP.md#更改本机代理选择)。
+- 模板被应用后成为普通文本。不要用实际 `.bashrc` 强制覆盖源模板，导致条件逻辑丢失。
+- 当前只声明了 1Password `account` 模式及 `prompt = false`，尚无秘密取值模板。接入秘密时在源文件保存引用，不提交密码、token、私钥或认证状态文件。
+- 读取或验证秘密时避免把值输出到日志、文档或工具结果中。运行时如何向应用提供秘密按用户授权与应用需求决定，不把“不允许任何运行时明文”作为本仓库默认要求。
+
+## 修改与验证流程
+
+先检查实际状态：
+
+```bash
+git -C ~/dotfiles status --short
+chezmoi diff
+```
+
+配置变更通常按以下方向处理：
+
+```text
+编辑源配置 → 查看目标文件的 diff → 按授权应用目标文件 → 再检查 diff → 查看 Git 差异 → 按授权提交
+```
+
+优先只应用本次涉及的目标，避免将其他尚未审阅的源变化一起部署。普通实际文件被应用修改后，可以针对该文件 `chezmoi add` 导回仓库，例如 mise 配置和 Neovim 锁文件；模板需保留源逻辑。具体命令见 [SETUP：日常维护流程](docs/SETUP.md#5-日常维护流程)。
+
+验证应与变化相称：
+
+- 文档：检查相对链接、Markdown 格式和命令示例；不需要应用 dotfiles 或启动应用。
+- Bash 模板：先渲染，再检查 Bash 语法；条件改变时检查相关分支。
+- `.profile`：检查 POSIX 写法。本机 `sh` 指向 Bash，`sh -n` 不能独立证明其他 shell 的兼容性。
+- TOML、JSON、XML：检查格式；部署后比较源渲染结果与实际文件。
+- 符号链接：核对链接目标与可解析性；格式或文件同步成功不等于跨机器功能验证。
+- 涉及行为变化时再做相关应用验证；不要为只读检查或文档修改触发安装、升级、授权或会话操作。
+
+常用仓库检查：
+
+```bash
+git -C ~/dotfiles diff --check
+git -C ~/dotfiles diff
+chezmoi diff
+```
+
+输出可能含个人信息或未来的秘密模板结果，应按任务需要控制检查范围；不要为查看 Git 凭据配置运行会输出 token 的命令。
+
+## 文档与后续维护
+
+- 两份 README 保持内容对应：英文版首行是 `English | [简体中文](README_CN.md)`，中文版首行是 `[English](README.md) | 简体中文`。当前语言为普通文字，只有另一种语言是链接。
+- 更新配置范围、初始化方式或适用平台时，同时维护两份 README 和 SETUP 中相关内容。日期、验证状态和提交记录只写实际核实的结果。
+- 远程备份、SSH、1Password 秘密模板及多机部署的进度见 [SETUP：后续事项](docs/SETUP.md#8-后续事项)。着手下一阶段前核对 Git remote、配置源和实际部署情况，再更新文档。
+- 恢复其他机器前阅读 [SETUP：新机器恢复流程与当前适用范围](docs/SETUP.md#6-新机器恢复流程与当前适用范围)。配置仓库不包含全套系统或依赖安装，不应直接宣称恢复后与本机完全等价。

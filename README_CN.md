@@ -4,6 +4,8 @@
 
 使用 [chezmoi](https://www.chezmoi.io/) 管理个人配置，用 Git 保存版本历史。仓库放在 `~/dotfiles`，与本机的系统维护工作目录分开。
 
+Agent 维护指引见 [AGENTS.md](AGENTS.md)。
+
 当前基线已在一台 Omarchy/Linux 机器上验证。仓库计划支持多台机器，其他平台和不同机器的配置适配仍在进行中。
 
 ## 已管理的配置
@@ -26,6 +28,7 @@
 ~/dotfiles/
 ├── README.md                  # 英文概览
 ├── README_CN.md               # 中文概览
+├── AGENTS.md                  # 给维护本仓库的 Agent 的指引
 ├── .chezmoiroot               # 指定 home/ 为配置源根目录
 ├── docs/
 │   └── SETUP.md               # 初始化与日常维护的详细记录（中文）

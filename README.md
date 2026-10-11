@@ -4,6 +4,8 @@ English | [简体中文](README_CN.md)
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/) and versioned with Git. The repository lives at `~/dotfiles`, separately from the machine maintenance workspace.
 
+Agent maintenance instructions: [AGENTS.md](AGENTS.md).
+
 The current baseline has been verified on one Omarchy/Linux machine. The repository is intended to support multiple machines; additional platform and machine-specific configuration is still in progress.
 
 ## Managed configuration
@@ -26,6 +28,7 @@ Application caches, sessions, downloaded tools and font files are outside this c
 ~/dotfiles/
 ├── README.md                  # English overview
 ├── README_CN.md               # Chinese overview
+├── AGENTS.md                  # Instructions for agents maintaining this repository
 ├── .chezmoiroot               # Selects home/ as the source root
 ├── docs/
 │   └── SETUP.md               # Detailed setup and maintenance notes (Chinese)
