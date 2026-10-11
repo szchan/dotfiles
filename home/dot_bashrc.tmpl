@@ -1,0 +1,57 @@
+# Omarchy environment (OMARCHY_PATH + PATH), needed even for non-interactive shells
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+
+# If not running interactively, don't do anything else (leave this above the rc source)
+[[ $- != *i* ]] && return
+
+# Syntax highlighting and inline suggestions for interactive Bash
+[[ -r "$HOME/.local/share/blesh/ble.sh" ]] && source -- "$HOME/.local/share/blesh/ble.sh" --attach=prompt
+
+# All the default Omarchy aliases and functions
+# (don't mess with these directly, just overwrite them here!)
+source "$OMARCHY_PATH/default/bash/rc"
+
+# Add your own exports, aliases, and functions here.
+#
+# Make an alias for invoking commands you use constantly
+# alias p='python'
+
+. "$HOME/.local/share/../bin/env"
+. "$HOME/.cargo/env"
+
+# Integrate existing fzf functions; ble.sh activates at the first prompt.
+if [[ ${BLE_VERSION-} ]]; then
+  ble-import -d integration/fzf-completion
+  ble-import -d integration/fzf-key-bindings
+
+  # Apply Ghostty's upstream ble.sh prompt-marker fix to older integrations.
+  # Ghostty loads its integration after .bashrc, so patch on the first prompt.
+  __ghostty_blesh_compat() {
+    declare -F __ghostty_precmd >/dev/null || return 0
+    local ghostty_precmd_definition
+    ghostty_precmd_definition=$(declare -f __ghostty_precmd)
+    ghostty_precmd_definition=${ghostty_precmd_definition//\\e]133;A;redraw=last;cl=line;aid=%s\\a/\\e]133;P;k=i;aid=%s\\a}
+    eval "$ghostty_precmd_definition"
+    blehook PRECMD-=__ghostty_blesh_compat
+  }
+  blehook PRECMD+=__ghostty_blesh_compat
+fi
+
+# Omarchy Time Machine Plugin
+alias omarchy-time-machine=~/.config/omarchy/plugins/jankeesvw.time-machine/bin/omarchy-time-machine
+
+# Alias vim to nvim
+alias vim=nvim
+{{ if .enableProxy }}
+# Proxy
+export https_proxy=http://127.0.0.1:7897
+export HTTPS_PROXY=http://127.0.0.1:7897
+export http_proxy=http://127.0.0.1:7897
+export HTTP_PROXY=http://127.0.0.1:7897
+export all_proxy=socks5://127.0.0.1:7897
+export ALL_PROXY=socks5://127.0.0.1:7897
+export ftp_proxy=http://127.0.0.1:7897
+export FTP_PROXY=http://127.0.0.1:7897
+export socks_proxy=socks5://127.0.0.1:7897
+export SOCKS_PROXY=socks5://127.0.0.1:7897
+{{ end }}
