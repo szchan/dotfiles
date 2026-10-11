@@ -1,3 +1,5 @@
+# Managed with chezmoi
+
 # Dynamic theme colors
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 
