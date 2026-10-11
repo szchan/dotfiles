@@ -47,7 +47,13 @@ chezmoi names encode target attributes: `dot_` becomes a leading dot, `.tmpl` ma
 
 ## Initialize an existing checkout
 
-With the repository already available at `~/dotfiles` and Git and chezmoi installed:
+On a compatible machine with Git and chezmoi installed, clone the repository if `~/dotfiles` does not exist yet:
+
+```bash
+git clone https://github.com/szchan/dotfiles.git "$HOME/dotfiles"
+```
+
+With the repository available at `~/dotfiles`:
 
 ```bash
 chezmoi init --source "$HOME/dotfiles"
@@ -101,7 +107,7 @@ Disabling the setting removes proxy exports from the generated file; it does not
 
 See [Setup and maintenance notes (Chinese)](docs/SETUP.md) for initialization details, configuration mappings, font dependencies, commit history, validation results and recovery instructions.
 
-As of 2026-10-11, the first batch is complete. Remote Git backup, SSH configuration, 1Password secret templates and deployment testing on another machine are pending. The initializer declares 1Password `account` mode with `prompt = false`; the current dotfiles do not retrieve secrets from 1Password. GitHub authentication uses `gh`.
+As of 2026-10-11, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). SSH configuration, 1Password secret templates and deployment testing on another machine are pending. The initializer declares 1Password `account` mode with `prompt = false`; the current dotfiles do not retrieve secrets from 1Password. GitHub authentication uses `gh`.
 
 ## License
 

@@ -47,7 +47,13 @@ chezmoi 用文件名编码目标属性：`dot_` 映射为开头的点，`.tmpl` 
 
 ## 初始化已有的仓库副本
 
-仓库已经放在 `~/dotfiles`，且已安装 Git 和 chezmoi 时：
+在兼容的机器上安装 Git 和 chezmoi 后，如果 `~/dotfiles` 尚不存在，可以先克隆仓库：
+
+```bash
+git clone https://github.com/szchan/dotfiles.git "$HOME/dotfiles"
+```
+
+仓库已经放在 `~/dotfiles` 时：
 
 ```bash
 chezmoi init --source "$HOME/dotfiles"
@@ -101,7 +107,7 @@ chezmoi apply ~/.bashrc
 
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
-截至 2026-10-11，第一批配置已完成。远程 Git 备份、SSH 配置、1Password 秘密模板及第二台机器的部署验证仍待完成。初始化模板已声明 1Password `account` 模式及 `prompt = false`，当前 dotfiles 尚未从 1Password 读取秘密；GitHub 认证由 `gh` 处理。
+截至 2026-10-11，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。SSH 配置、1Password 秘密模板及第二台机器的部署验证仍待完成。初始化模板已声明 1Password `account` 模式及 `prompt = false`，当前 dotfiles 尚未从 1Password 读取秘密；GitHub 认证由 `gh` 处理。
 
 ## 许可证
 

@@ -17,7 +17,9 @@
 - Neovim 主题链接保留了原始目标路径，当前能正常解析。
 - 字体目录的旧 `.bak` 文件未导入仓库。
 
-尚未完成：远程 Git 备份、SSH 配置接入、chezmoi 秘密取值模板，以及其他机器的实际部署验证。目前没有 Git remote，历史仍只保存在本机。
+远程 Git 备份已完成：公开仓库为 [szchan/dotfiles](https://github.com/szchan/dotfiles)，`origin` 为 `https://github.com/szchan/dotfiles.git`，本地 `main` 跟踪 `origin/main`。
+
+尚未完成：SSH 配置接入、chezmoi 秘密取值模板，以及其他机器的实际部署验证。
 
 1Password 已声明 `account` 模式和 `prompt = false`；这不代表已完成 chezmoi 秘密读取验证。第一批没有使用秘密取值函数，Git 的 GitHub 凭据仍由 `gh` 获取。
 
@@ -295,7 +297,7 @@ git -C ~/dotfiles status --short
 git -C ~/dotfiles log --oneline
 ```
 
-`chezmoi diff` 看部署差异；`git status` 看源仓库尚未提交的变化，二者不是同一件事。以后配置 remote 后，`git push` 才会把已提交的历史复制到远程。
+`chezmoi diff` 看部署差异；`git status` 看源仓库尚未提交的变化，二者不是同一件事。当前已配置 GitHub `origin`；使用 `git -C ~/dotfiles push` 将新提交同步到远程，未提交的工作区变化不会被推送。
 
 ## 6. 新机器恢复流程与当前适用范围
 
@@ -303,10 +305,10 @@ git -C ~/dotfiles log --oneline
 
 在相同环境恢复前，准备 Git、chezmoi、相关应用、mise 和字体。Git 的凭据助手依赖已安装且可用的 `gh`；Neovim 主题依赖 Omarchy 主题目录。现阶段配置不读取 1Password 秘密，因此恢复第一批无需触发秘密读取授权。
 
-远程仓库建立后，且新机器的 `~/dotfiles` 尚不存在时，以下是恢复流程示例。先将示例 URL 替换为实际地址：
+远程仓库已建立；新机器的 `~/dotfiles` 尚不存在时，可以按以下流程克隆并初始化：
 
 ```bash
-git clone '替换为实际仓库URL' "$HOME/dotfiles"
+git clone https://github.com/szchan/dotfiles.git "$HOME/dotfiles"
 chezmoi init --source "$HOME/dotfiles"
 chezmoi diff
 ```
@@ -353,9 +355,23 @@ chezmoi --override-data '{"enableProxy":false}' cat ~/.bashrc | bash -n
 
 此外，以 Python 的 TOML、JSON、XML 解析器检查对应配置格式，并比较渲染内容和实际文件字节；这些检查不等同于全部应用的功能测试。
 
+### GitHub 公开备份与许可证（2026-10-11）
+
+- 添加根目录 MIT [LICENSE](../LICENSE)，版权所有者为 Shaoze Chen，年份为 2026；中英文 README 均链接到许可证。
+- 原创配置改动和文档使用 MIT；第三方文件保留各自许可证，包括 Neovim starter 的 [Apache-2.0 许可证](../home/dot_config/nvim/LICENSE)。
+- 许可证提交为 `919c423`，已随完整本地提交历史首次推送到公开仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。
+- 已核对 GitHub 可见性为 `public`、许可证识别为 `MIT`，首次推送后的远程 `main` 与本地提交一致；已设置 upstream。
+- 发布前检查了 Git 历史中的 41 个文件对象，常见 token、私钥、含凭据 URL 和字面秘密赋值模式未发现匹配。这是模式检查结果，不代表能识别所有类型的秘密。
+
+后续日常推送：
+
+```bash
+git -C ~/dotfiles push
+```
+
 ## 8. 后续事项
 
-1. 建立远程 Git 仓库并完成首次推送，使备份离开本机。
+1. 保持远程备份更新：配置修改提交后，推送到已建立的 GitHub 仓库。
 2. 接入 SSH 配置，梳理 1Password SSH agent 与生成文件的边界。
 3. 按应用需要加入 1Password 引用模板，不把秘密值提交到源仓库。
 4. 为非 Omarchy 或其他系统补齐主题、工具选择和个人身份的条件配置。
