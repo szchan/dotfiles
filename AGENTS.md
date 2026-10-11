@@ -6,6 +6,7 @@
 
 - [README.md（English）](README.md)：英文概览、仓库结构与常用操作。
 - [README_CN.md（中文）](README_CN.md)：与英文 README 对应的中文概览。
+- [LICENSE](LICENSE)：原创内容的 MIT 许可证；第三方文件继续保留各自的许可与版权声明。
 - [docs/SETUP.md](docs/SETUP.md)：初始化步骤、第一批配置说明、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。

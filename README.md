@@ -29,6 +29,7 @@ Application caches, sessions, downloaded tools and font files are outside this c
 ├── README.md                  # English overview
 ├── README_CN.md               # Chinese overview
 ├── AGENTS.md                  # Instructions for agents maintaining this repository
+├── LICENSE                    # MIT license for original contributions
 ├── .chezmoiroot               # Selects home/ as the source root
 ├── docs/
 │   └── SETUP.md               # Detailed setup and maintenance notes (Chinese)
@@ -101,3 +102,9 @@ Disabling the setting removes proxy exports from the generated file; it does not
 See [Setup and maintenance notes (Chinese)](docs/SETUP.md) for initialization details, configuration mappings, font dependencies, commit history, validation results and recovery instructions.
 
 As of 2026-10-11, the first batch is complete. Remote Git backup, SSH configuration, 1Password secret templates and deployment testing on another machine are pending. The initializer declares 1Password `account` mode with `prompt = false`; the current dotfiles do not retrieve secrets from 1Password. GitHub authentication uses `gh`.
+
+## License
+
+Original configuration changes and documentation in this repository are licensed under the [MIT License](LICENSE), copyright 2026 Shaoze Chen.
+
+Included third-party files retain their original licenses. The Neovim starter includes an [Apache-2.0 license](home/dot_config/nvim/LICENSE), which is preserved.

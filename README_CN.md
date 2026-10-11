@@ -29,6 +29,7 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 ├── README.md                  # 英文概览
 ├── README_CN.md               # 中文概览
 ├── AGENTS.md                  # 给维护本仓库的 Agent 的指引
+├── LICENSE                    # 原创内容的 MIT 许可证
 ├── .chezmoiroot               # 指定 home/ 为配置源根目录
 ├── docs/
 │   └── SETUP.md               # 初始化与日常维护的详细记录（中文）
@@ -101,3 +102,9 @@ chezmoi apply ~/.bashrc
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
 截至 2026-10-11，第一批配置已完成。远程 Git 备份、SSH 配置、1Password 秘密模板及第二台机器的部署验证仍待完成。初始化模板已声明 1Password `account` 模式及 `prompt = false`，当前 dotfiles 尚未从 1Password 读取秘密；GitHub 认证由 `gh` 处理。
+
+## 许可证
+
+本仓库的原创配置改动与文档采用 [MIT 许可证](LICENSE)，版权所有者为 Shaoze Chen，年份为 2026。
+
+仓库中的第三方文件继续保留原有许可证。Neovim starter 自带的 [Apache-2.0 许可证](home/dot_config/nvim/LICENSE)已保留。
