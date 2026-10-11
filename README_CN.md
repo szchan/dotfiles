@@ -19,6 +19,7 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 | mise | 工具版本声明和升级偏好 |
 | Neovim | Lua 配置、插件锁文件和 Omarchy 主题符号链接 |
 | Fontconfig | 等宽字体偏好与简体中文字体回退规则 |
+| SSH | 从 1Password 读取服务器信息和公钥的模板，私钥由 SSH agent 使用 |
 
 应用缓存、会话、下载的工具和字体文件不属于这份配置基线。字体目录中的旧备份文件也没有导入。
 
@@ -32,18 +33,20 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 ├── LICENSE                    # 原创内容的 MIT 许可证
 ├── .chezmoiroot               # 指定 home/ 为配置源根目录
 ├── docs/
-│   └── SETUP.md               # 初始化与日常维护的详细记录（中文）
+│   ├── SETUP.md               # 初始化与日常维护的详细记录（中文）
+│   └── SSH.md                 # SSH 与 1Password 配置及验证记录（中文）
 └── home/
     ├── .chezmoi.toml.tmpl     # 生成本机 chezmoi 配置
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── private_dot_ssh/       # SSH 配置与公钥模板
     └── dot_config/            # 应用配置
 ```
 
 只有 `home/` 是部署源根目录。README 和 `docs/` 保留在仓库内。
 
-chezmoi 用文件名编码目标属性：`dot_` 映射为开头的点，`.tmpl` 表示模板，`symlink_` 声明符号链接。普通配置的源文件与部署后的实际文件是两份文件。
+chezmoi 用文件名编码目标属性：`dot_` 映射为开头的点，`.tmpl` 表示模板，`symlink_` 声明符号链接。`private_` 限制目标权限，不加密仓库内容。普通配置的源文件与部署后的实际文件是两份文件。
 
 ## 初始化已有的仓库副本
 
@@ -52,6 +55,8 @@ chezmoi 用文件名编码目标属性：`dot_` 映射为开头的点，`.tmpl` 
 ```bash
 git clone https://github.com/szchan/dotfiles.git "$HOME/dotfiles"
 ```
+
+完整恢复还需要安装 1Password 桌面应用与 `op` CLI，启用 CLI 集成和 SSH agent，并能访问模板引用的条目。SSH 配置当前使用 Linux agent socket 路径；其他系统需先适配。详见 [SSH 配置说明](docs/SSH.md)。
 
 仓库已经放在 `~/dotfiles` 时：
 
@@ -91,7 +96,7 @@ git -C ~/dotfiles diff --cached
 git -C ~/dotfiles commit -m "Describe the configuration change"
 ```
 
-如果应用直接修改了普通配置，可以用 `chezmoi add` 重新导入该文件，例如 mise 工具清单或 Neovim 插件锁文件。对于 `.bashrc`，应编辑源模板并保留条件逻辑。
+如果应用直接修改了普通配置，可以用 `chezmoi add` 重新导入该文件，例如 mise 工具清单或 Neovim 插件锁文件。对于 `.bashrc`，应编辑源模板并保留条件逻辑。SSH 配置及公钥同样应维护源模板，避免用渲染后的实际值覆盖 1Password 引用。
 
 需要重新选择代理开关时：
 
@@ -107,7 +112,7 @@ chezmoi apply ~/.bashrc
 
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
-截至 2026-10-11，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。SSH 配置、1Password 秘密模板及第二台机器的部署验证仍待完成。初始化模板已声明 1Password `account` 模式及 `prompt = false`，当前 dotfiles 尚未从 1Password 读取秘密；GitHub 认证由 `gh` 处理。
+截至 2026-10-11，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已在本机验证，用户确认两台服务器均可登录；本次新增内容尚待提交和推送。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
 
 ## 许可证
 

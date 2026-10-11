@@ -19,6 +19,7 @@ The current baseline has been verified on one Omarchy/Linux machine. The reposit
 | mise | Tool version requests and upgrade preferences |
 | Neovim | Lua configuration, plugin lockfile and the Omarchy theme symlink |
 | Fontconfig | Monospace font preferences and Simplified Chinese font fallback rules |
+| SSH | Templates that retrieve server details and public keys from 1Password; private keys are used by the SSH agent |
 
 Application caches, sessions, downloaded tools and font files are outside this configuration baseline. The Fontconfig backup file was also excluded.
 
@@ -32,18 +33,20 @@ Application caches, sessions, downloaded tools and font files are outside this c
 ├── LICENSE                    # MIT license for original contributions
 ├── .chezmoiroot               # Selects home/ as the source root
 ├── docs/
-│   └── SETUP.md               # Detailed setup and maintenance notes (Chinese)
+│   ├── SETUP.md               # Detailed setup and maintenance notes (Chinese)
+│   └── SSH.md                 # SSH and 1Password setup and validation (Chinese)
 └── home/
     ├── .chezmoi.toml.tmpl     # Generates the local chezmoi configuration
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── private_dot_ssh/       # SSH configuration and public key templates
     └── dot_config/            # Application configuration
 ```
 
 Only `home/` is the deployment source root. The README files and `docs/` stay in the repository.
 
-chezmoi names encode target attributes: `dot_` becomes a leading dot, `.tmpl` marks a template, and `symlink_` declares a symbolic link. Ordinary source files and their deployed copies are separate files.
+chezmoi names encode target attributes: `dot_` becomes a leading dot, `.tmpl` marks a template, and `symlink_` declares a symbolic link. `private_` restricts target permissions; it does not encrypt repository contents. Ordinary source files and their deployed copies are separate files.
 
 ## Initialize an existing checkout
 
@@ -52,6 +55,8 @@ On a compatible machine with Git and chezmoi installed, clone the repository if 
 ```bash
 git clone https://github.com/szchan/dotfiles.git "$HOME/dotfiles"
 ```
+
+A complete restore also requires the 1Password desktop app and `op` CLI, CLI integration and the SSH agent enabled, and access to the referenced items. The SSH configuration currently uses the Linux agent socket path; adapt it before using another operating system. See [SSH setup notes (Chinese)](docs/SSH.md).
 
 With the repository available at `~/dotfiles`:
 
@@ -91,7 +96,7 @@ git -C ~/dotfiles diff --cached
 git -C ~/dotfiles commit -m "Describe the configuration change"
 ```
 
-If an application changes a plain configuration file directly, import that file again with `chezmoi add`. Examples include the mise tool list and Neovim's plugin lockfile. For `.bashrc`, edit the source template and preserve its conditional logic.
+If an application changes a plain configuration file directly, import that file again with `chezmoi add`. Examples include the mise tool list and Neovim's plugin lockfile. For `.bashrc`, edit the source template and preserve its conditional logic. Maintain the SSH configuration and public key as source templates too, so rendered values do not replace the 1Password references.
 
 To choose the proxy setting again:
 
@@ -107,7 +112,7 @@ Disabling the setting removes proxy exports from the generated file; it does not
 
 See [Setup and maintenance notes (Chinese)](docs/SETUP.md) for initialization details, configuration mappings, font dependencies, commit history, validation results and recovery instructions.
 
-As of 2026-10-11, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). SSH configuration, 1Password secret templates and deployment testing on another machine are pending. The initializer declares 1Password `account` mode with `prompt = false`; the current dotfiles do not retrieve secrets from 1Password. GitHub authentication uses `gh`.
+As of 2026-10-11, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). The second-batch SSH and 1Password templates have been verified locally, and the user confirmed successful logins to both servers; these additions await commit and push. Deployment testing on another machine is pending. 1Password uses `account` mode with `prompt = false`; GitHub authentication continues to use `gh`.
 
 ## License
 

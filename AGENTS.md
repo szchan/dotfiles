@@ -7,7 +7,8 @@
 - [README.md（English）](README.md)：英文概览、仓库结构与常用操作。
 - [README_CN.md（中文）](README_CN.md)：与英文 README 对应的中文概览。
 - [LICENSE](LICENSE)：原创内容的 MIT 许可证；第三方文件继续保留各自的许可与版权声明。
-- [docs/SETUP.md](docs/SETUP.md)：初始化步骤、第一批配置说明、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
+- [docs/SETUP.md](docs/SETUP.md)：初始化步骤、配置映射、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
+- [docs/SSH.md](docs/SSH.md)：第二批 SSH 与 1Password 模板、权限、恢复依赖、授权复用及验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -52,7 +53,8 @@ Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lu
 - 修改初始化模板后需要重新 `chezmoi init --source "$HOME/dotfiles"` 才会生成新的本机运行配置。不要为重新生成配置顺手添加 `--apply`；先查看部署差异。
 - 关闭代理选项不等于清理已运行进程的环境变量，具体处理见 [SETUP：更改本机代理选择](docs/SETUP.md#更改本机代理选择)。
 - 模板被应用后成为普通文本。不要用实际 `.bashrc` 强制覆盖源模板，导致条件逻辑丢失。
-- 当前只声明了 1Password `account` 模式及 `prompt = false`，尚无秘密取值模板。接入秘密时在源文件保存引用，不提交密码、token、私钥或认证状态文件。
+- 1Password 使用 `account` 模式及 `prompt = false`；SSH 模板已通过 `onepasswordRead` 读取服务器信息与公钥。源文件保存引用，不提交实际服务器信息、密码、token、私钥或认证状态文件。
+- SSH 维护见 [SSH.md](docs/SSH.md)。保留 `private_dot_ssh` 及文件的 `private_` 属性；`IdentityFile` 指向公钥，私钥由 1Password agent 使用。不要用 `chezmoi add ~/.ssh/config` 将渲染结果覆盖源模板，也不要整体导入 `~/.ssh` 或 1Password 自动生成的文件。当前 agent socket 路径按 Linux 配置，跨系统恢复需要先适配。
 - 读取或验证秘密时避免把值输出到日志、文档或工具结果中。运行时如何向应用提供秘密按用户授权与应用需求决定，不把“不允许任何运行时明文”作为本仓库默认要求。
 
 ## 修改与验证流程

@@ -1,0 +1,16 @@
+# Managed by chezmoi.
+
+Host {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host1_alias" }}
+    HostName {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host1_hostname" }}
+    User {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host1_user" }}
+    IdentityFile ~/.ssh/id_ed25519_1password.pub
+    IdentitiesOnly yes
+
+Host {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host2_alias" }}
+    HostName {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host2_hostname" }}
+    User {{ onepasswordRead "op://ywbln576rlhme3yk4bitbsxheu/SSH hosts/host2_user" }}
+    IdentityFile ~/.ssh/id_ed25519_1password.pub
+    IdentitiesOnly yes
+
+Host *
+    IdentityAgent ~/.1password/agent.sock

@@ -1,4 +1,4 @@
-# Dotfiles 初始化、第一批配置与日常维护
+# Dotfiles 初始化、配置与日常维护
 
 核查日期：2026-10-11（Asia/Singapore）。本机 chezmoi：`v2.72.1`，入口 `/usr/bin/chezmoi`。
 
@@ -8,7 +8,7 @@
 
 第一批七类配置已全部导入并提交：Ghostty、herdr、Git、Bash、mise、Neovim、字体配置。
 
-本次核查确认：
+第一批完成时的核查结果：
 
 - 全局 `chezmoi diff` 无输出，已管理的配置与本机实际文件一致。
 - 文档更新前 Git 工作区干净，配置基线最后一笔提交为 `785e068`。
@@ -19,9 +19,9 @@
 
 远程 Git 备份已完成：公开仓库为 [szchan/dotfiles](https://github.com/szchan/dotfiles)，`origin` 为 `https://github.com/szchan/dotfiles.git`，本地 `main` 跟踪 `origin/main`。
 
-尚未完成：SSH 配置接入、chezmoi 秘密取值模板，以及其他机器的实际部署验证。
+第二批已完成本机 SSH 与 1Password 模板接入：源文件只保存引用，渲染结果与实际配置一致；用户确认两台服务器真实登录成功。配置与验证记录见 [SSH.md](SSH.md)。本次新增配置和文档尚待提交、推送。
 
-1Password 已声明 `account` 模式和 `prompt = false`；这不代表已完成 chezmoi 秘密读取验证。第一批没有使用秘密取值函数，Git 的 GitHub 凭据仍由 `gh` 获取。
+1Password 使用 `account` 模式和 `prompt = false`，已验证模板读取服务器信息与公钥；SSH 私钥仍由 agent 使用。其他机器的实际部署验证尚未完成。Git 的 GitHub 凭据仍由 `gh` 获取。
 
 ## 2. 仓库布局与文件映射
 
@@ -29,12 +29,16 @@
 ~/dotfiles/
 ├── .chezmoiroot                 # 内容为 home
 ├── docs/
-│   └── SETUP.md                 # 本文，不部署到家目录
+│   ├── SETUP.md                 # 本文，不部署到家目录
+│   └── SSH.md                   # 第二批 SSH 配置与验证记录
 └── home/
     ├── .chezmoi.toml.tmpl        # 初始化本机 chezmoi 配置
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── private_dot_ssh/
+    │   ├── private_config.tmpl
+    │   └── private_id_ed25519_1password.pub.tmpl
     └── dot_config/
         ├── ghostty/config
         ├── herdr/config.toml
@@ -59,8 +63,10 @@
 | `home/dot_config/mise/config.toml` | `~/.config/mise/config.toml` |
 | `home/dot_config/nvim/` | `~/.config/nvim/` |
 | `home/dot_config/fontconfig/` | `~/.config/fontconfig/` 中选定的两个文件 |
+| `home/private_dot_ssh/private_config.tmpl` | `~/.ssh/config`，从 1Password 渲染 |
+| `home/private_dot_ssh/private_id_ed25519_1password.pub.tmpl` | `~/.ssh/id_ed25519_1password.pub`，从 1Password 渲染 |
 
-`dot_` 表示目标名称以点开头，`.tmpl` 表示内容需要渲染，`symlink_` 表示创建符号链接。应保留 chezmoi 生成的属性命名。
+`dot_` 表示目标名称以点开头，`.tmpl` 表示内容需要渲染，`symlink_` 表示创建符号链接。`private_` 限制目标的组与其他用户权限，但不加密源文件或 Git 内容。应保留 chezmoi 的属性命名。
 
 本机运行配置为 `~/.config/chezmoi/chezmoi.toml`，由初始化模板生成，不作为普通配置导入。本仓库采用 chezmoi 默认的文件模式：普通配置的源文件和实际文件是两份文件；Neovim 的主题链接是明确保留的符号链接。
 
@@ -303,7 +309,7 @@ git -C ~/dotfiles log --oneline
 
 当前验证范围是这台 Omarchy/Linux 机器。Bash 已增加可选组件检查和代理开关，但仓库还没有完成所有配置的跨平台适配；恢复配置也不等于安装整个桌面系统。
 
-在相同环境恢复前，准备 Git、chezmoi、相关应用、mise 和字体。Git 的凭据助手依赖已安装且可用的 `gh`；Neovim 主题依赖 Omarchy 主题目录。现阶段配置不读取 1Password 秘密，因此恢复第一批无需触发秘密读取授权。
+在相同环境恢复前，准备 Git、chezmoi、相关应用、mise 和字体。Git 的凭据助手依赖已安装且可用的 `gh`；Neovim 主题依赖 Omarchy 主题目录。完整恢复现在还需要 1Password 桌面应用与 `op` CLI，启用 CLI 集成和 SSH agent，并能访问引用的条目。SSH 模板使用本机 Linux socket 路径；其他系统需要先适配。详见 [SSH：恢复依赖](SSH.md#恢复依赖)。
 
 远程仓库已建立；新机器的 `~/dotfiles` 尚不存在时，可以按以下流程克隆并初始化：
 
@@ -372,9 +378,9 @@ git -C ~/dotfiles push
 ## 8. 后续事项
 
 1. 保持远程备份更新：配置修改提交后，推送到已建立的 GitHub 仓库。
-2. 接入 SSH 配置，梳理 1Password SSH agent 与生成文件的边界。
-3. 按应用需要加入 1Password 引用模板，不把秘密值提交到源仓库。
+2. 提交并推送已验证的 SSH 模板和本次文档；后续维护遵循 [SSH.md](SSH.md)。
+3. 按其他应用需要继续加入 1Password 引用模板，不把秘密值提交到源仓库。
 4. 为非 Omarchy 或其他系统补齐主题、工具选择和个人身份的条件配置。
 5. 在第二台机器实际恢复并记录结果，再逐步接入输入法、Hyprland 等第二批配置。
 
-本文保存第一批的事实与维护流程；后续改动应同步更新相关段落和核查日期。
+本文保存初始化与配置维护流程；第二批 SSH 的详细记录见 [SSH.md](SSH.md)。后续改动应同步更新相关段落和核查日期。
