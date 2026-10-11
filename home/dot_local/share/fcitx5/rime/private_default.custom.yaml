@@ -1,0 +1,4 @@
+# Managed addition from community.cn-input; other Rime settings may be added here.
+patch:
+  schema_list:
+    - schema: rime_ice

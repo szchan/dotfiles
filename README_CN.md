@@ -20,6 +20,7 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 | Neovim | Lua 配置、插件锁文件和 Omarchy 主题符号链接 |
 | Fontconfig | 等宽字体偏好与简体中文字体回退规则 |
 | SSH | 从 1Password 读取服务器信息和公钥的模板，私钥由 SSH agent 使用 |
+| Fcitx5 / Rime | 输入法列表、选定的行为设置及雾凇拼音方案选择 |
 
 应用缓存、会话、下载的工具和字体文件不属于这份配置基线。字体目录中的旧备份文件也没有导入。
 
@@ -34,12 +35,14 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 ├── .chezmoiroot               # 指定 home/ 为配置源根目录
 ├── docs/
 │   ├── SETUP.md               # 初始化与日常维护的详细记录（中文）
-│   └── SSH.md                 # SSH 与 1Password 配置及验证记录（中文）
+│   ├── SSH.md                 # SSH 与 1Password 配置及验证记录（中文）
+│   └── INPUT-METHOD.md        # Fcitx5 / Rime 配置与恢复依赖（中文）
 └── home/
     ├── .chezmoi.toml.tmpl     # 生成本机 chezmoi 配置
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── dot_local/             # Rime 个人配置补丁
     ├── private_dot_ssh/       # SSH 配置与公钥模板
     └── dot_config/            # 应用配置
 ```
@@ -74,7 +77,7 @@ chezmoi apply
 chezmoi diff
 ```
 
-应用及其依赖需要另外安装。在用户主目录运行 `mise install` 安装声明的工具；在 Neovim 中执行 `:Lazy restore`，可恢复 `lazy-lock.json` 中记录的插件版本。所需字体族及本机对应的 Arch 包名见详细配置记录。
+应用及其依赖需要另外安装。在用户主目录运行 `mise install` 安装声明的工具；在 Neovim 中执行 `:Lazy restore`，可恢复 `lazy-lock.json` 中记录的插件版本。所需字体族及本机对应的 Arch 包名见详细配置记录。输入法恢复还需要 Fcitx5、Rime 及雾凇拼音方案，桌面启动与输入模块集成另行配置；详见 [输入法说明](docs/INPUT-METHOD.md)。
 
 没有 Omarchy 的机器应先适配主题，再应用完整基线。Neovim 主题链接依赖 Omarchy 当前主题目录；Ghostty 含有 `async-backend = io_uring`。Git 身份目前是共享配置；mise 中多数工具使用 `latest`，Node 固定为 `26.8.2`。
 
@@ -112,7 +115,7 @@ chezmoi apply ~/.bashrc
 
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
-截至 2026-10-11，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已在本机验证，用户确认两台服务器均可登录；本次新增内容尚待提交和推送。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
+截至 2026-10-11，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已验证，并以 `89603c1` 提交、推送；用户确认两台服务器均可登录。Fcitx5 / Rime 的五个配置文件已导入并核对一致，本次输入法配置和文档尚待提交、推送。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
 
 ## 许可证
 

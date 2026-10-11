@@ -20,6 +20,7 @@ The current baseline has been verified on one Omarchy/Linux machine. The reposit
 | Neovim | Lua configuration, plugin lockfile and the Omarchy theme symlink |
 | Fontconfig | Monospace font preferences and Simplified Chinese font fallback rules |
 | SSH | Templates that retrieve server details and public keys from 1Password; private keys are used by the SSH agent |
+| Fcitx5 / Rime | Input method list, selected behavior settings and the Rime Ice schema selection |
 
 Application caches, sessions, downloaded tools and font files are outside this configuration baseline. The Fontconfig backup file was also excluded.
 
@@ -34,12 +35,14 @@ Application caches, sessions, downloaded tools and font files are outside this c
 ├── .chezmoiroot               # Selects home/ as the source root
 ├── docs/
 │   ├── SETUP.md               # Detailed setup and maintenance notes (Chinese)
-│   └── SSH.md                 # SSH and 1Password setup and validation (Chinese)
+│   ├── SSH.md                 # SSH and 1Password setup and validation (Chinese)
+│   └── INPUT-METHOD.md        # Fcitx5 / Rime configuration and restore dependencies (Chinese)
 └── home/
     ├── .chezmoi.toml.tmpl     # Generates the local chezmoi configuration
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── dot_local/             # Personal Rime configuration patch
     ├── private_dot_ssh/       # SSH configuration and public key templates
     └── dot_config/            # Application configuration
 ```
@@ -74,7 +77,7 @@ chezmoi apply
 chezmoi diff
 ```
 
-The managed applications and their dependencies need to be installed separately. Run `mise install` from the home directory to install the declared tools. In Neovim, `:Lazy restore` restores plugin revisions from `lazy-lock.json`. The required font families and their current Arch package names are recorded in the setup notes.
+The managed applications and their dependencies need to be installed separately. Run `mise install` from the home directory to install the declared tools. In Neovim, `:Lazy restore` restores plugin revisions from `lazy-lock.json`. The required font families and their current Arch package names are recorded in the setup notes. Restoring the input method also requires Fcitx5, Rime and the Rime Ice schema; desktop startup and input module integration are configured separately. See [input method notes (Chinese)](docs/INPUT-METHOD.md).
 
 For a machine without Omarchy, adapt the theme configuration before applying the complete baseline. The Neovim theme symlink depends on Omarchy's current theme directory, and Ghostty includes `async-backend = io_uring`. Git identity is currently shared configuration; most mise tools request `latest`, while Node is pinned to `26.8.2`.
 
@@ -112,7 +115,7 @@ Disabling the setting removes proxy exports from the generated file; it does not
 
 See [Setup and maintenance notes (Chinese)](docs/SETUP.md) for initialization details, configuration mappings, font dependencies, commit history, validation results and recovery instructions.
 
-As of 2026-10-11, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). The second-batch SSH and 1Password templates have been verified locally, and the user confirmed successful logins to both servers; these additions await commit and push. Deployment testing on another machine is pending. 1Password uses `account` mode with `prompt = false`; GitHub authentication continues to use `gh`.
+As of 2026-10-11, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). The second-batch SSH and 1Password templates have been verified, committed and pushed as `89603c1`, and the user confirmed successful logins to both servers. Five Fcitx5 / Rime configuration files have been imported and verified against the local files; this input method configuration and documentation await commit and push. Deployment testing on another machine is pending. 1Password uses `account` mode with `prompt = false`; GitHub authentication continues to use `gh`.
 
 ## License
 

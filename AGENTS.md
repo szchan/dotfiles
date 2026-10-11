@@ -9,6 +9,7 @@
 - [LICENSE](LICENSE)：原创内容的 MIT 许可证；第三方文件继续保留各自的许可与版权声明。
 - [docs/SETUP.md](docs/SETUP.md)：初始化步骤、配置映射、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
 - [docs/SSH.md](docs/SSH.md)：第二批 SSH 与 1Password 模板、权限、恢复依赖、授权复用及验证记录。
+- [docs/INPUT-METHOD.md](docs/INPUT-METHOD.md)：第二批 Fcitx5 / Rime 的五个配置文件、恢复依赖、导入范围及验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -46,6 +47,12 @@
 Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lua) 是链接声明，指向 Omarchy 当前主题。不要使用 `chezmoi add --follow` 将其变成固定主题内容。没有 Omarchy 的机器需要先增加备用主题；当前仓库尚未完成跨平台验证。
 
 修改 Omarchy 用户配置时遵循环境中适用的 Omarchy 指引；`/usr/share/omarchy/` 只读，修改用户配置或本仓库中的源配置。需要操作 herdr 本身时，遵循其官方 skill 和环境检查要求，不把仅查看本仓库配置变成会话操作。
+
+## 输入法配置的维护约定
+
+仅管理 [INPUT-METHOD.md](docs/INPUT-METHOD.md) 列出的四个 Fcitx5 文件及 Rime 的 `default.custom.yaml`。这些是普通文件，可在 GUI 更改后针对实际发生变化的文件重新 `chezmoi add`。保留 `private_` 属性和 Rime 的补丁结构。
+
+不要整体导入 Rime 用户目录：学习词库、`sync/`、编译产物、安装标识和运行状态不属于公开配置基线。个人词库需要另外制定私密备份方案。雾凇拼音由系统包提供，不复制上游词典和编译文件到仓库；桌面启动和输入模块集成也尚未随本项纳入。导入现有配置且 diff 为空时，不为验证重启或重新部署输入法。
 
 ## 模板、本机选项与秘密
 
