@@ -1,0 +1,10 @@
+# Herdr uses its built-in official defaults for all omitted settings.
+# Retain completed onboarding and existing local preferences.
+onboarding = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+status_indicators = "dots"
+[ui.toast]
+delivery = "terminal"
