@@ -12,6 +12,7 @@
 - [docs/INPUT-METHOD.md](docs/INPUT-METHOD.md)：第二批 Fcitx5 / Rime 的五个配置文件、恢复依赖、导入范围及验证记录。
 - [docs/STARSHIP.md](docs/STARSHIP.md)：提示符普通配置、Bash 接入、恢复依赖与验证记录。
 - [docs/BTOP.md](docs/BTOP.md)：btop 普通配置、Omarchy 主题链接模板、恢复依赖与验证记录。
+- [docs/OMARCHY-SHELL.md](docs/OMARCHY-SHELL.md)：界面普通配置、八个第三方插件依赖、恢复次序与验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -65,6 +66,12 @@ Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lu
 btop 维护见 [BTOP.md](docs/BTOP.md)：`btop.conf` 是普通文件，主题链接是 `symlink_current.theme.tmpl`，使用 `.chezmoi.homeDir` 保持家目录可移植。保留链接，不使用 `--follow` 将主题复制为固定文件。btop 退出可能保存配置，偏好变更后应核对并针对普通配置重新导入。
 
 用户于 2026-10-12 选择显示器配置暂时仅保留在本机，不纳入公开备份；尚未添加机器标识选项。后续不要因多机目标而自动导入 `monitors.lua`、`hyprmoncfg-monitors.lua` 或增加机器标识。实际需要时依据新的任务范围处理。
+
+## Omarchy 界面配置
+
+[home/dot_config/omarchy/private_shell.json](home/dot_config/omarchy/private_shell.json) 是普通 JSON 文件，保留 `private_` 属性。维护范围和插件依赖见 [OMARCHY-SHELL.md](docs/OMARCHY-SHELL.md)。界面工具改动实际文件后可针对该文件重新导入；不要因此整体导入插件目录、认证或运行状态。
+
+当前配置停用了 `omarchy.menu` 和 `omarchy.lock`，引用八个第三方插件。在新机器应用之前按文档准备依赖并确认菜单和锁屏替代方案。配置备份不包含插件安装、账号认证或全部插件偏好。实际修改界面配置时先遵循 Omarchy skill；导入现有文件且 diff 为空时不为验证重启 shell。
 
 ## 模板、本机选项与秘密
 

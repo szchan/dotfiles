@@ -23,6 +23,7 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 | Fcitx5 / Rime | 输入法列表、选定的行为设置及雾凇拼音方案选择 |
 | Starship | 提示符布局、目录缩略、Git 状态符号与配色 |
 | btop | 监视器显示偏好，以及跟随 Omarchy 当前主题的链接模板 |
+| Omarchy shell | 状态栏布局、时钟格式、插件启停及屏保和锁屏等待时间 |
 
 应用缓存、会话、下载的工具和字体文件不属于这份配置基线。字体目录中的旧备份文件也没有导入。
 
@@ -40,7 +41,8 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 │   ├── SSH.md                 # SSH 与 1Password 配置及验证记录（中文）
 │   ├── INPUT-METHOD.md        # Fcitx5 / Rime 配置与恢复依赖（中文）
 │   ├── STARSHIP.md            # 提示符配置、Shell 接入与维护（中文）
-│   └── BTOP.md                # btop 配置与主题链接模板（中文）
+│   ├── BTOP.md                # btop 配置与主题链接模板（中文）
+│   └── OMARCHY-SHELL.md       # 界面配置、插件依赖与恢复次序（中文）
 └── home/
     ├── .chezmoi.toml.tmpl     # 生成本机 chezmoi 配置
     ├── dot_bashrc.tmpl
@@ -83,7 +85,9 @@ chezmoi diff
 
 应用及其依赖需要另外安装。在用户主目录运行 `mise install` 安装声明的工具；在 Neovim 中执行 `:Lazy restore`，可恢复 `lazy-lock.json` 中记录的插件版本。所需字体族及本机对应的 Arch 包名见详细配置记录。输入法恢复还需要 Fcitx5、Rime 及雾凇拼音方案，桌面启动与输入模块集成另行配置；详见 [输入法说明](docs/INPUT-METHOD.md)。Starship 需要安装程序并在交互 Shell 中初始化；本机由 Omarchy Bash 配置负责初始化，详见 [Starship 说明](docs/STARSHIP.md)。
 
-没有 Omarchy 的机器应先适配主题，再应用完整基线。Neovim 和 btop 的主题链接依赖 Omarchy 当前主题目录；Ghostty 含有 `async-backend = io_uring`。Git 身份目前是共享配置；mise 中多数工具使用 `latest`，Node 固定为 `26.8.2`。
+完整恢复 `shell.json` 前需安装其引用的第三方插件，尤其是配置中启用的锁屏插件；插件程序及认证状态不包含在本项备份中。详见 [界面配置与恢复说明](docs/OMARCHY-SHELL.md)。
+
+没有 Omarchy 的机器应先适配主题，并处理 Omarchy 专用界面配置的适用范围，再应用完整基线。Neovim 和 btop 的主题链接依赖 Omarchy 当前主题目录；Ghostty 含有 `async-backend = io_uring`。Git 身份目前是共享配置；mise 中多数工具使用 `latest`，Node 固定为 `26.8.2`。
 
 ## 日常操作
 
@@ -119,7 +123,7 @@ chezmoi apply ~/.bashrc
 
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
-截至 2026-10-12，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已验证，并以 `89603c1` 提交、推送；用户确认两台服务器均可登录。Fcitx5 / Rime 的五个配置文件已导入、验证，并以 `d78a30e` 提交、推送。Starship 已以 `57aba3f` 提交、推送。btop 配置和主题链接模板已导入并核对一致，本次新增内容尚待提交、推送。显示器配置按用户选择暂时保留在本机，不属于备份范围。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
+截至 2026-10-12，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已验证，并以 `89603c1` 提交、推送；用户确认两台服务器均可登录。Fcitx5 / Rime 的五个配置文件已导入、验证，并以 `d78a30e` 提交、推送。Starship 已以 `57aba3f` 提交、推送。btop 已以 `1298d9d` 提交、推送。Omarchy 的 `shell.json` 已导入并核对一致，本次界面配置和文档尚待提交、推送。显示器配置按用户选择暂时保留在本机，不属于备份范围。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
 
 ## 许可证
 
