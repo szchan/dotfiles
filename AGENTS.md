@@ -10,6 +10,7 @@
 - [docs/SETUP.md](docs/SETUP.md)：初始化步骤、配置映射、字体依赖、日常维护、恢复流程、提交与验证记录及后续事项。
 - [docs/SSH.md](docs/SSH.md)：第二批 SSH 与 1Password 模板、权限、恢复依赖、授权复用及验证记录。
 - [docs/INPUT-METHOD.md](docs/INPUT-METHOD.md)：第二批 Fcitx5 / Rime 的五个配置文件、恢复依赖、导入范围及验证记录。
+- [docs/STARSHIP.md](docs/STARSHIP.md)：提示符普通配置、Bash 接入、恢复依赖与验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -53,6 +54,10 @@ Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lu
 仅管理 [INPUT-METHOD.md](docs/INPUT-METHOD.md) 列出的四个 Fcitx5 文件及 Rime 的 `default.custom.yaml`。这些是普通文件，可在 GUI 更改后针对实际发生变化的文件重新 `chezmoi add`。保留 `private_` 属性和 Rime 的补丁结构。
 
 不要整体导入 Rime 用户目录：学习词库、`sync/`、编译产物、安装标识和运行状态不属于公开配置基线。个人词库需要另外制定私密备份方案。雾凇拼音由系统包提供，不复制上游词典和编译文件到仓库；桌面启动和输入模块集成也尚未随本项纳入。导入现有配置且 diff 为空时，不为验证重启或重新部署输入法。
+
+## Starship 维护约定
+
+[home/dot_config/starship.toml](home/dot_config/starship.toml) 是普通 TOML 文件，当前不需要机器模板。维护方式见 [STARSHIP.md](docs/STARSHIP.md)。本机 Omarchy Bash 初始化脚本已经调用 `starship init bash`，不要重复添加初始化语句。非 Omarchy 的新机器需要按目标 Shell 另外接入；只恢复 TOML 不代表提示符已启用。
 
 ## 模板、本机选项与秘密
 

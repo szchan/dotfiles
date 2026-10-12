@@ -103,3 +103,7 @@ chezmoi apply ~/.local/share/fcitx5/rime/default.custom.yaml
 - 核对了软件包版本和系统方案文件的归属；没有安装软件、重启输入法、重新部署 Rime 或改动桌面环境。
 
 以上是配置导入和一致性验证；其他机器的恢复及输入法功能验证尚未完成。
+
+## 提交与备份
+
+配置及相关文档已在 `d78a30e`（`Manage Fcitx5 and Rime configuration`）中提交。2026-10-12 只读核对确认 GitHub `main` 与本地提交一致，继续导入下一项前工作区干净。
