@@ -23,7 +23,9 @@
 
 第二批输入法配置已导入：Fcitx5 的四个文件和 Rime 的 `default.custom.yaml`，源文件与本机逐字节一致，目标 diff 为空。说明见 [INPUT-METHOD.md](INPUT-METHOD.md)，已提交并推送为 `d78a30e`。
 
-Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致、目标 diff 为空。见 [STARSHIP.md](STARSHIP.md)；本次 Starship 配置和文档尚待提交、推送。
+Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致、目标 diff 为空。见 [STARSHIP.md](STARSHIP.md)，已提交并推送为 `57aba3f`。
+
+btop 配置及主题链接模板已导入并核对一致，目标 diff 为空。见 [BTOP.md](BTOP.md)；本次 btop 配置与文档尚待提交、推送。用户选择暂不备份显示器配置，保留现有本机管理方式；尚未添加机器标识选项。
 
 1Password 使用 `account` 模式和 `prompt = false`，已验证模板读取服务器信息与公钥；SSH 私钥仍由 agent 使用。其他机器的实际部署验证尚未完成。Git 的 GitHub 凭据仍由 `gh` 获取。
 
@@ -36,7 +38,8 @@ Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致
 │   ├── SETUP.md                 # 本文，不部署到家目录
 │   ├── SSH.md                   # 第二批 SSH 配置与验证记录
 │   ├── INPUT-METHOD.md          # 第二批输入法配置与恢复依赖
-│   └── STARSHIP.md              # 提示符配置与 Shell 接入说明
+│   ├── STARSHIP.md              # 提示符配置与 Shell 接入说明
+│   └── BTOP.md                  # btop 配置与主题链接模板
 └── home/
     ├── .chezmoi.toml.tmpl        # 初始化本机 chezmoi 配置
     ├── dot_bashrc.tmpl
@@ -47,6 +50,7 @@ Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致
     │   ├── private_config.tmpl
     │   └── private_id_ed25519_1password.pub.tmpl
     └── dot_config/
+        ├── btop/               # 普通配置和主题链接模板
         ├── starship.toml
         ├── fcitx5/              # 四个选定的配置文件
         ├── ghostty/config
@@ -77,6 +81,8 @@ Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致
 | `home/dot_config/fcitx5/` | `~/.config/fcitx5/` 中选定的四个文件 |
 | `home/dot_local/share/fcitx5/rime/private_default.custom.yaml` | `~/.local/share/fcitx5/rime/default.custom.yaml` |
 | `home/dot_config/starship.toml` | `~/.config/starship.toml` |
+| `home/dot_config/btop/btop.conf` | `~/.config/btop/btop.conf` |
+| `home/dot_config/btop/themes/symlink_current.theme.tmpl` | `~/.config/btop/themes/current.theme`，渲染为符号链接 |
 
 `dot_` 表示目标名称以点开头，`.tmpl` 表示内容需要渲染，`symlink_` 表示创建符号链接。`private_` 限制目标的组与其他用户权限，但不加密源文件或 Git 内容。应保留 chezmoi 的属性命名。
 
@@ -321,7 +327,7 @@ git -C ~/dotfiles log --oneline
 
 当前验证范围是这台 Omarchy/Linux 机器。Bash 已增加可选组件检查和代理开关，但仓库还没有完成所有配置的跨平台适配；恢复配置也不等于安装整个桌面系统。
 
-在相同环境恢复前，准备 Git、chezmoi、相关应用、mise 和字体。Git 的凭据助手依赖已安装且可用的 `gh`；Neovim 主题依赖 Omarchy 主题目录。完整恢复现在还需要 1Password 桌面应用与 `op` CLI，启用 CLI 集成和 SSH agent，并能访问引用的条目。SSH 模板使用本机 Linux socket 路径；其他系统需要先适配。详见 [SSH：恢复依赖](SSH.md#恢复依赖)。输入法还需要 Fcitx5、Rime、雾凇拼音方案，以及对应桌面的启动和输入模块集成；详见 [输入法：恢复依赖](INPUT-METHOD.md#恢复依赖)。Starship 还需要程序安装与交互 Shell 初始化；本机由 Omarchy 的 Bash 初始化脚本负责。详见 [Starship：恢复依赖与 Shell 接入](STARSHIP.md#恢复依赖与-shell-接入)。
+在相同环境恢复前，准备 Git、chezmoi、相关应用、mise 和字体。Git 的凭据助手依赖已安装且可用的 `gh`；Neovim 和 btop 的主题链接依赖 Omarchy 当前主题目录；btop 程序需另外安装。完整恢复现在还需要 1Password 桌面应用与 `op` CLI，启用 CLI 集成和 SSH agent，并能访问引用的条目。SSH 模板使用本机 Linux socket 路径；其他系统需要先适配。详见 [SSH：恢复依赖](SSH.md#恢复依赖)。输入法还需要 Fcitx5、Rime、雾凇拼音方案，以及对应桌面的启动和输入模块集成；详见 [输入法：恢复依赖](INPUT-METHOD.md#恢复依赖)。Starship 还需要程序安装与交互 Shell 初始化；本机由 Omarchy 的 Bash 初始化脚本负责。详见 [Starship：恢复依赖与 Shell 接入](STARSHIP.md#恢复依赖与-shell-接入)。
 
 远程仓库已建立；新机器的 `~/dotfiles` 尚不存在时，可以按以下流程克隆并初始化：
 
@@ -340,7 +346,7 @@ chezmoi diff
 
 随后在家目录运行 `mise install`，打开 Neovim 完成插件安装，必要时执行 `:Lazy restore`；检查字体解析和应用启动。应用配置前后仍需关注 Git 身份、Ghostty 的 Linux 设置和 Omarchy 主题依赖。当前没有自动安装或恢复这些依赖的 chezmoi 脚本。
 
-对于没有 Omarchy 的机器，应先补上 Neovim 备用主题等条件配置，再采用上述全量应用流程。其他机器的实际恢复测试尚待记录。
+对于没有 Omarchy 的机器，应先适配 Neovim 和 btop 的主题配置，再采用上述全量应用流程。其他机器的实际恢复测试尚待记录。
 
 ## 7. 提交与验证记录
 
@@ -395,12 +401,16 @@ SSH 模板及相关文档已在 `89603c1` 中提交，核对时 GitHub `main` �
 
 输入法配置及文档已在 `d78a30e` 中提交；核对时 GitHub `main` 与本地一致，工作区干净。随后用户导入 Starship 普通配置，已确认内容一致、权限为 `644`、TOML 解析成功且目标 diff 为空。没有改动提示符偏好、重新应用配置或启动新的交互 Shell。见 [Starship 验证记录](STARSHIP.md#验证记录)。
 
+### Starship 备份与 btop 导入（2026-10-12）
+
+Starship 及文档已提交为 `57aba3f`，核对时 GitHub `main` 与本地一致，工作区干净。随后用户导入 btop 普通配置和主题链接模板，内容及链接目标均与本机一致；主题目标可解析，目标 diff 为空。详见 [btop 验证记录](BTOP.md#验证记录)。用户选择暂不备份显示器配置，机器标识选项也待实际需要时再添加。
+
 ## 8. 后续事项
 
 1. 保持远程备份更新：配置修改提交后，推送到已建立的 GitHub 仓库。
-2. 提交并推送已导入的 Starship 配置及本次文档；个人学习词库以后单独制定私密备份方案。
+2. 提交并推送已导入的 btop 配置及本次文档；个人学习词库以后单独制定私密备份方案。
 3. 按其他应用需要继续加入 1Password 引用模板，不把秘密值提交到源仓库。
 4. 为非 Omarchy 或其他系统补齐主题、工具选择和个人身份的条件配置。
-5. 在第二台机器实际恢复并记录结果，逐步接入 Hyprland 等桌面配置。
+5. 在第二台机器实际恢复并记录结果。显示器配置按用户当前选择暂不纳入；其他桌面配置按实际个人定制逐步评估。
 
-本文保存初始化与配置维护流程；第二批的详细记录见 [SSH.md](SSH.md)、[INPUT-METHOD.md](INPUT-METHOD.md) 和 [STARSHIP.md](STARSHIP.md)。后续改动应同步更新相关段落和核查日期。
+本文保存初始化与配置维护流程；第二批的详细记录见 [SSH.md](SSH.md)、[INPUT-METHOD.md](INPUT-METHOD.md)、[STARSHIP.md](STARSHIP.md) 和 [BTOP.md](BTOP.md)。后续改动应同步更新相关段落和核查日期。

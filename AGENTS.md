@@ -11,6 +11,7 @@
 - [docs/SSH.md](docs/SSH.md)：第二批 SSH 与 1Password 模板、权限、恢复依赖、授权复用及验证记录。
 - [docs/INPUT-METHOD.md](docs/INPUT-METHOD.md)：第二批 Fcitx5 / Rime 的五个配置文件、恢复依赖、导入范围及验证记录。
 - [docs/STARSHIP.md](docs/STARSHIP.md)：提示符普通配置、Bash 接入、恢复依赖与验证记录。
+- [docs/BTOP.md](docs/BTOP.md)：btop 普通配置、Omarchy 主题链接模板、恢复依赖与验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -58,6 +59,12 @@ Neovim 的 [symlink_theme.lua](home/dot_config/nvim/lua/plugins/symlink_theme.lu
 ## Starship 维护约定
 
 [home/dot_config/starship.toml](home/dot_config/starship.toml) 是普通 TOML 文件，当前不需要机器模板。维护方式见 [STARSHIP.md](docs/STARSHIP.md)。本机 Omarchy Bash 初始化脚本已经调用 `starship init bash`，不要重复添加初始化语句。非 Omarchy 的新机器需要按目标 Shell 另外接入；只恢复 TOML 不代表提示符已启用。
+
+## btop 与当前显示器范围
+
+btop 维护见 [BTOP.md](docs/BTOP.md)：`btop.conf` 是普通文件，主题链接是 `symlink_current.theme.tmpl`，使用 `.chezmoi.homeDir` 保持家目录可移植。保留链接，不使用 `--follow` 将主题复制为固定文件。btop 退出可能保存配置，偏好变更后应核对并针对普通配置重新导入。
+
+用户于 2026-10-12 选择显示器配置暂时仅保留在本机，不纳入公开备份；尚未添加机器标识选项。后续不要因多机目标而自动导入 `monitors.lua`、`hyprmoncfg-monitors.lua` 或增加机器标识。实际需要时依据新的任务范围处理。
 
 ## 模板、本机选项与秘密
 

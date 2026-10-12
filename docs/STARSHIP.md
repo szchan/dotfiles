@@ -69,4 +69,4 @@ chezmoi apply ~/.config/starship.toml
 - Python `tomllib` 解析成功，目标 `chezmoi diff` 无输出。
 - 已核对本机 Omarchy Bash 初始化链及 Starship 软件包版本。
 
-本轮没有修改显示行为、应用配置或启动新的交互 Shell；未进行新机器的恢复测试。本次配置及文档待用户提交、推送。
+本轮没有修改显示行为、应用配置或启动新的交互 Shell；未进行新机器的恢复测试。配置及文档已提交为 `57aba3f`，用户完成推送；2026-10-12 只读核对确认 GitHub `main` 与本地一致，继续导入下一项前工作区干净。
