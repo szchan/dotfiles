@@ -13,6 +13,7 @@
 - [docs/STARSHIP.md](docs/STARSHIP.md)：提示符普通配置、Bash 接入、恢复依赖与验证记录。
 - [docs/BTOP.md](docs/BTOP.md)：btop 普通配置、Omarchy 主题链接模板、恢复依赖与验证记录。
 - [docs/OMARCHY-SHELL.md](docs/OMARCHY-SHELL.md)：界面普通配置、八个第三方插件依赖、恢复次序与验证记录。
+- [docs/DEFAULT-APPS.md](docs/DEFAULT-APPS.md)：默认终端、浏览器与协议关联、Clash 入口、邮件排除规则及验证记录。
 
 开始维护前阅读本文和与任务相关的 SETUP 段落。新增配置、调整维护流程或完成待办后，更新相关文档；应用配置的详细说明优先放在 `docs/`。
 
@@ -72,6 +73,12 @@ btop 维护见 [BTOP.md](docs/BTOP.md)：`btop.conf` 是普通文件，主题链
 [home/dot_config/omarchy/private_shell.json](home/dot_config/omarchy/private_shell.json) 是普通 JSON 文件，保留 `private_` 属性。维护范围和插件依赖见 [OMARCHY-SHELL.md](docs/OMARCHY-SHELL.md)。界面工具改动实际文件后可针对该文件重新导入；不要因此整体导入插件目录、认证或运行状态。
 
 当前配置停用了 `omarchy.menu` 和 `omarchy.lock`，引用八个第三方插件。在新机器应用之前按文档准备依赖并确认菜单和锁屏替代方案。配置备份不包含插件安装、账号认证或全部插件偏好。实际修改界面配置时先遵循 Omarchy skill；导入现有文件且 diff 为空时不为验证重启 shell。
+
+## 默认应用维护约定
+
+[DEFAULT-APPS.md](docs/DEFAULT-APPS.md) 列出的三个文件均为普通配置，可针对实际更改重新导入。Clash 两个协议指向 `clash-verge-handler.desktop`，不要恢复为本机不存在的 `clash-verge.desktop`。用户选择移除过期 Omamail 关联、暂不指定邮件客户端；保留 `Removed Associations` 中的排除规则，不因系统查询返回 `HEY.desktop` 就把它写为显式默认值。
+
+恢复前核对应用是否安装及 desktop ID 是否有效；只读验证使用 `xdg-mime query`、`xdg-terminal-exec --print-id` 和 `desktop-file-validate`，不要为查看默认设置而打开浏览器、邮件或订阅链接。此项不包含应用账号、邮件数据或 Clash 订阅配置。
 
 ## 模板、本机选项与秘密
 

@@ -24,6 +24,7 @@ The current baseline has been verified on one Omarchy/Linux machine. The reposit
 | Starship | Prompt layout, directory truncation, Git status symbols and colors |
 | btop | Monitor display preferences and a link template following the current Omarchy theme |
 | Omarchy shell | Bar layout, clock format, plugin activation and idle screensaver/lock timers |
+| Default applications | Ghostty terminal preference, browser and protocol associations, and the Clash protocol handler |
 
 Application caches, sessions, downloaded tools and font files are outside this configuration baseline. The Fontconfig backup file was also excluded.
 
@@ -42,7 +43,8 @@ Application caches, sessions, downloaded tools and font files are outside this c
 │   ├── INPUT-METHOD.md        # Fcitx5 / Rime configuration and restore dependencies (Chinese)
 │   ├── STARSHIP.md            # Prompt configuration, shell integration and maintenance (Chinese)
 │   ├── BTOP.md                # btop configuration and theme link template (Chinese)
-│   └── OMARCHY-SHELL.md       # Shell configuration, plugin dependencies and restore order (Chinese)
+│   ├── OMARCHY-SHELL.md       # Shell configuration, plugin dependencies and restore order (Chinese)
+│   └── DEFAULT-APPS.md        # Default terminal, protocol associations and restore dependencies (Chinese)
 └── home/
     ├── .chezmoi.toml.tmpl     # Generates the local chezmoi configuration
     ├── dot_bashrc.tmpl
@@ -123,7 +125,7 @@ Disabling the setting removes proxy exports from the generated file; it does not
 
 See [Setup and maintenance notes (Chinese)](docs/SETUP.md) for initialization details, configuration mappings, font dependencies, commit history, validation results and recovery instructions.
 
-As of 2026-10-12, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). The second-batch SSH and 1Password templates have been verified, committed and pushed as `89603c1`, and the user confirmed successful logins to both servers. Five Fcitx5 / Rime configuration files have been imported, verified, committed and pushed as `d78a30e`. Starship has been committed and pushed as `57aba3f`. btop has been committed and pushed as `1298d9d`. The Omarchy `shell.json` has been imported and verified against the local file; this shell configuration and documentation await commit and push. Display configuration remains local at the user’s request and is outside the backup scope. Deployment testing on another machine is pending. 1Password uses `account` mode with `prompt = false`; GitHub authentication continues to use `gh`.
+As of 2026-10-12, the first batch is complete and backed up to the public GitHub repository [szchan/dotfiles](https://github.com/szchan/dotfiles). The second-batch SSH and 1Password templates have been verified, committed and pushed as `89603c1`, and the user confirmed successful logins to both servers. Five Fcitx5 / Rime configuration files have been imported, verified, committed and pushed as `d78a30e`. Starship has been committed and pushed as `57aba3f`. btop has been committed and pushed as `1298d9d`. The Omarchy shell configuration has been committed and pushed as `ef563a3`. Three default-application files have been imported, the association changes applied, and the results verified; these additions await commit and push. Application associations require the corresponding programs and desktop entries; see [default application notes (Chinese)](docs/DEFAULT-APPS.md). Display configuration remains local at the user’s request and is outside the backup scope. Deployment testing on another machine is pending. 1Password uses `account` mode with `prompt = false`; GitHub authentication continues to use `gh`.
 
 ## License
 

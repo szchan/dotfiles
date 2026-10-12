@@ -25,7 +25,7 @@
 
 Starship 提示符配置已导入，TOML 解析通过，源文件与本机一致、目标 diff 为空。见 [STARSHIP.md](STARSHIP.md)，已提交并推送为 `57aba3f`。
 
-btop 配置及主题链接模板已导入并核对一致，目标 diff 为空。见 [BTOP.md](BTOP.md)，已提交并推送为 `1298d9d`。Omarchy 的 `shell.json` 已导入，JSON 解析通过、实际权限为 `600`、源文件一致且目标 diff 为空；相关插件依赖见 [OMARCHY-SHELL.md](OMARCHY-SHELL.md)，本项新增配置和文档尚待提交、推送。用户选择暂不备份显示器配置，保留现有本机管理方式；尚未添加机器标识选项。
+btop 配置及主题链接模板已导入并核对一致，目标 diff 为空。见 [BTOP.md](BTOP.md)，已提交并推送为 `1298d9d`。Omarchy 的 `shell.json` 已导入，JSON 解析通过、实际权限为 `600`、源文件一致且目标 diff 为空；相关插件依赖见 [OMARCHY-SHELL.md](OMARCHY-SHELL.md)，已提交并推送为 `ef563a3`。默认终端、MIME 关联和 Clash 协议入口已导入；关联修改已由用户应用，实际查询符合预期。说明见 [DEFAULT-APPS.md](DEFAULT-APPS.md)，本项新增配置与文档尚待提交、推送。用户选择暂不备份显示器配置，保留现有本机管理方式；尚未添加机器标识选项。
 
 1Password 使用 `account` 模式和 `prompt = false`，已验证模板读取服务器信息与公钥；SSH 私钥仍由 agent 使用。其他机器的实际部署验证尚未完成。Git 的 GitHub 凭据仍由 `gh` 获取。
 
@@ -40,17 +40,21 @@ btop 配置及主题链接模板已导入并核对一致，目标 diff 为空。
 │   ├── INPUT-METHOD.md          # 第二批输入法配置与恢复依赖
 │   ├── STARSHIP.md              # 提示符配置与 Shell 接入说明
 │   ├── BTOP.md                  # btop 配置与主题链接模板
-│   └── OMARCHY-SHELL.md         # 界面配置与第三方插件依赖
+│   ├── OMARCHY-SHELL.md         # 界面配置与第三方插件依赖
+│   └── DEFAULT-APPS.md          # 默认应用与协议关联
 └── home/
     ├── .chezmoi.toml.tmpl        # 初始化本机 chezmoi 配置
     ├── dot_bashrc.tmpl
     ├── dot_bash_profile
     ├── dot_profile
+    ├── dot_local/share/applications/clash-verge-handler.desktop
     ├── dot_local/share/fcitx5/rime/private_default.custom.yaml
     ├── private_dot_ssh/
     │   ├── private_config.tmpl
     │   └── private_id_ed25519_1password.pub.tmpl
     └── dot_config/
+        ├── mimeapps.list
+        ├── xdg-terminals.list
         ├── omarchy/private_shell.json
         ├── btop/               # 普通配置和主题链接模板
         ├── starship.toml
@@ -86,6 +90,9 @@ btop 配置及主题链接模板已导入并核对一致，目标 diff 为空。
 | `home/dot_config/btop/btop.conf` | `~/.config/btop/btop.conf` |
 | `home/dot_config/btop/themes/symlink_current.theme.tmpl` | `~/.config/btop/themes/current.theme`，渲染为符号链接 |
 | `home/dot_config/omarchy/private_shell.json` | `~/.config/omarchy/shell.json`，权限 `600` |
+| `home/dot_config/mimeapps.list` | `~/.config/mimeapps.list` |
+| `home/dot_config/xdg-terminals.list` | `~/.config/xdg-terminals.list` |
+| `home/dot_local/share/applications/clash-verge-handler.desktop` | `~/.local/share/applications/clash-verge-handler.desktop` |
 
 `dot_` 表示目标名称以点开头，`.tmpl` 表示内容需要渲染，`symlink_` 表示创建符号链接。`private_` 限制目标的组与其他用户权限，但不加密源文件或 Git 内容。应保留 chezmoi 的属性命名。
 
@@ -334,6 +341,8 @@ git -C ~/dotfiles log --oneline
 
 完整恢复 Omarchy 界面前，还需准备 `shell.json` 引用的第三方插件。配置停用了默认菜单和锁屏插件，应在应用前先安装并准备相应替代插件，再验证菜单和锁屏行为；不要将配置文件备份等同于插件程序、插件认证和全部桌面状态的恢复。详见 [界面配置：恢复次序](OMARCHY-SHELL.md#恢复次序)。
 
+默认应用配置还需要相应程序及有效 desktop ID。当前选择 Ghostty、Microsoft Edge、Clash Verge 和 `chatgpt.desktop` 协议入口；邮件没有显式默认值，并排除过期 Omamail 关联。恢复到不同应用组合的机器前应先调整这些选择，详见 [默认应用：恢复依赖](DEFAULT-APPS.md#恢复依赖)。
+
 远程仓库已建立；新机器的 `~/dotfiles` 尚不存在时，可以按以下流程克隆并初始化：
 
 ```bash
@@ -414,12 +423,16 @@ Starship 及文档已提交为 `57aba3f`，核对时 GitHub `main` 与本地一�
 
 btop 及文档已提交为 `1298d9d`；核对时 GitHub `main` 与本地一致，工作区干净。随后用户导入 `shell.json`，文件一致、JSON 有效、实际权限为 `600`，目标 diff 为空。八个第三方插件依赖的本机 manifest 和 Git 来源均已核对；没有安装插件、应用界面配置或重启 shell。见 [界面配置验证记录](OMARCHY-SHELL.md#验证记录)。
 
+### Omarchy 界面备份与默认应用（2026-10-12）
+
+Omarchy 界面配置已在 `ef563a3` 中提交、推送；核对时远程与本地一致，工作区干净。随后用户导入默认应用的三个文件，修正 Clash 协议入口并按其选择移除过期 Omamail 默认关联、加入排除规则。三个目标均一致且 diff 为空；默认终端选择和实际协议查询已核对，未启动 GUI 应用。详见 [默认应用验证记录](DEFAULT-APPS.md#验证记录)。
+
 ## 8. 后续事项
 
 1. 保持远程备份更新：配置修改提交后，推送到已建立的 GitHub 仓库。
-2. 提交并推送已导入的 Omarchy 界面配置及本次文档；个人学习词库以后单独制定私密备份方案。
+2. 提交并推送已验证的默认应用配置及本次文档；个人学习词库以后单独制定私密备份方案。
 3. 按其他应用需要继续加入 1Password 引用模板，不把秘密值提交到源仓库。
 4. 为非 Omarchy 或其他系统补齐主题、工具选择和个人身份的条件配置。
 5. 在第二台机器实际恢复并记录结果。显示器配置按用户当前选择暂不纳入；其他桌面配置按实际个人定制逐步评估。
 
-本文保存初始化与配置维护流程；第二批的详细记录见 [SSH.md](SSH.md)、[INPUT-METHOD.md](INPUT-METHOD.md)、[STARSHIP.md](STARSHIP.md)、[BTOP.md](BTOP.md) 和 [OMARCHY-SHELL.md](OMARCHY-SHELL.md)。后续改动应同步更新相关段落和核查日期。
+本文保存初始化与配置维护流程；第二批的详细记录见 [SSH.md](SSH.md)、[INPUT-METHOD.md](INPUT-METHOD.md)、[STARSHIP.md](STARSHIP.md)、[BTOP.md](BTOP.md)、[OMARCHY-SHELL.md](OMARCHY-SHELL.md) 和 [DEFAULT-APPS.md](DEFAULT-APPS.md)。后续改动应同步更新相关段落和核查日期。

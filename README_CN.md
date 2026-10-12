@@ -24,6 +24,7 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 | Starship | 提示符布局、目录缩略、Git 状态符号与配色 |
 | btop | 监视器显示偏好，以及跟随 Omarchy 当前主题的链接模板 |
 | Omarchy shell | 状态栏布局、时钟格式、插件启停及屏保和锁屏等待时间 |
+| 默认应用 | Ghostty 默认终端、浏览器和协议关联，以及 Clash 协议入口 |
 
 应用缓存、会话、下载的工具和字体文件不属于这份配置基线。字体目录中的旧备份文件也没有导入。
 
@@ -42,7 +43,8 @@ Agent 维护指引见 [AGENTS.md](AGENTS.md)。
 │   ├── INPUT-METHOD.md        # Fcitx5 / Rime 配置与恢复依赖（中文）
 │   ├── STARSHIP.md            # 提示符配置、Shell 接入与维护（中文）
 │   ├── BTOP.md                # btop 配置与主题链接模板（中文）
-│   └── OMARCHY-SHELL.md       # 界面配置、插件依赖与恢复次序（中文）
+│   ├── OMARCHY-SHELL.md       # 界面配置、插件依赖与恢复次序（中文）
+│   └── DEFAULT-APPS.md        # 默认终端、协议关联与恢复依赖（中文）
 └── home/
     ├── .chezmoi.toml.tmpl     # 生成本机 chezmoi 配置
     ├── dot_bashrc.tmpl
@@ -123,7 +125,7 @@ chezmoi apply ~/.bashrc
 
 [初始化与日常维护记录](docs/SETUP.md) 包含初始化步骤、配置映射、字体依赖、提交历史、验证结果和恢复流程。
 
-截至 2026-10-12，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已验证，并以 `89603c1` 提交、推送；用户确认两台服务器均可登录。Fcitx5 / Rime 的五个配置文件已导入、验证，并以 `d78a30e` 提交、推送。Starship 已以 `57aba3f` 提交、推送。btop 已以 `1298d9d` 提交、推送。Omarchy 的 `shell.json` 已导入并核对一致，本次界面配置和文档尚待提交、推送。显示器配置按用户选择暂时保留在本机，不属于备份范围。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
+截至 2026-10-12，第一批配置已完成，并已备份到公开的 GitHub 仓库 [szchan/dotfiles](https://github.com/szchan/dotfiles)。第二批的 SSH 与 1Password 模板已验证，并以 `89603c1` 提交、推送；用户确认两台服务器均可登录。Fcitx5 / Rime 的五个配置文件已导入、验证，并以 `d78a30e` 提交、推送。Starship 已以 `57aba3f` 提交、推送。btop 已以 `1298d9d` 提交、推送。Omarchy 界面配置已以 `ef563a3` 提交、推送。默认应用的三个文件已导入，关联修改已应用并验证，本次新增配置和文档尚待提交、推送。默认应用关联依赖对应程序与桌面入口，详见 [默认应用说明](docs/DEFAULT-APPS.md)。显示器配置按用户选择暂时保留在本机，不属于备份范围。第二台机器的部署验证仍待完成。1Password 使用 `account` 模式及 `prompt = false`；GitHub 认证继续由 `gh` 处理。
 
 ## 许可证
 
